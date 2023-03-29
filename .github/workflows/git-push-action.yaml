@@ -9,5 +9,5 @@ jobs:
       - name: Print greeting
         run: echo "Hello World! $PRINT_GOOD_BYE"
       - name: Print goodbye
-        if: ${{ env.PRINT_GOOD_BYE}}
+        if: ${{ env.PRINT_GOOD_BYE == 'True'}}
         run: echo "Done - bye!"
