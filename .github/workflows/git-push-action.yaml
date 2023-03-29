@@ -4,6 +4,7 @@ env:
   PRINT_GOOD_BYE: False
 #  GITHUB_TOKEN: ${{ github.token }}
   GITHUB_TOKEN: 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
+
   DOCKER_IMAGE_NAME: ghcr.io/asheesh-amg/test-github-action/flask_test
   DOCKER_IMAGE_VERSION: 2.7
 jobs:
