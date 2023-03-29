@@ -2,11 +2,9 @@ name: githubaction
 on: push
 env:
   PRINT_GOOD_BYE: False
-#  GITHUB_TOKEN: ${{ github.token }}
-  GITHUB_TOKEN: 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
+  GITHUB_TOKEN: ${{ github.token }}
+  IMAGE_NAME: flask_test
 
-  DOCKER_IMAGE_NAME: ghcr.io/asheesh-amg/test-github-action/flask_test
-  DOCKER_IMAGE_VERSION: 2.7
 jobs:
   first-job:
     runs-on: ubuntu-latest
@@ -16,13 +14,38 @@ jobs:
       - name: Print goodbye
         if: ${{ env.PRINT_GOOD_BYE == 'True'}}
         run: echo "Done - bye!"
-      - name: Check out the code
-        uses: actions/checkout@v3
-      - name: run command
-        run: ls -lrt
-      - name: Authenticalte github packages service
-        run: docker login https://ghcr.io -u asheesh-amg -p $GITHUB_TOKEN
-      - name: Build docker image
-        run: docker build -f Dockerfile -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION .
-      - name: push the docker image
-        run: docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
+#      - name: Check out the code
+#        uses: actions/checkout@v3
+#      - name: run command
+#        run: ls -lrt
+#      - name: Authenticalte github packages service
+#        run: docker login https://ghcr.io -u asheesh-amg -p $GITHUB_TOKEN
+#      - name: Build docker image
+#        run: docker build -f Dockerfile -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION .
+#      - name: push the docker image
+#        run: docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
+      - uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        # This is where you will update the personal access token to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
