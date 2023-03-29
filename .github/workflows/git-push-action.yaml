@@ -14,6 +14,10 @@ jobs:
       - name: Print goodbye
         if: ${{ env.PRINT_GOOD_BYE == 'True'}}
         run: echo "Done - bye!"
+      - name: Check out the code
+        uses: actions/checkout@v3
+      - name: run command
+        run: ls -lrt
       - name: Authenticalte github packages service
         run: docker login https://ghcr.io -u asheesh-amg -p $GITHUB_TOKEN
       - name: Build docker image
