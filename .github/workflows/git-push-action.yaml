@@ -1,10 +1,13 @@
 name: githubaction
 on: push
+env:
+  PRINT_GOOD_BYE: False
 jobs:
   first-job:
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
-        run: echo "Hello World!"
+        run: echo "Hello World! $PRINT_GOOD_BYE"
       - name: Print goodbye
+        if: ${{ env.PRINT_GOOD_BYE}}
         run: echo "Done - bye!"

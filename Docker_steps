@@ -1,0 +1,39 @@
+# go code repo folder
+cd repo_foloder_path
+
+# build docker image
+sudo docker build --tag python-docker .
+sudo docker build --tag docker.pkg.github.com/asheesh-amg/test-github-action/flask_test .
+
+# check image
+sudo docker images
+
+# run image
+sudo docker run -d -p 5000:5000 docker.pkg.github.com/asheesh-amg/test-github-action/flask_test
+sudo docker run -d -p 5000:5000 ghcr.io/asheesh-amg/test-github-action/flask_test:2.5
+
+To check the logs of application
+docker logs -f container_id
+docker logs -f 7dce1004a8875e158cd25c0732fa096a31a5f93bb2dc33acb8c47687b086b4c6
+
+to check running container ids
+sudo docker ps
+
+# Stop the running container
+sudo docker stop container id
+sudo docker stop f2935e9d4a62
+
+-------------------- login to github registry ---------
+export CR_PAT=YOUR_TOKEN
+To test the login
+echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+
+# https://dev.to/github/publishing-a-docker-image-to-githubs-container-repository-4n50
+sudo docker push ghcr.io/asheesh/python-docker:latest
+sudo docker push ghcr.io/NAMESPACE/IMAGE_NAME:2.5
+
+$ docker login docker.pkg.github.com -u asheesh-amg -p <access_token>
+
+sudo chmod 666 /var/run/docker.sock
+
+docker pull ghcr.io/asheesh-amg/test-github-action/flask_test:2.5
