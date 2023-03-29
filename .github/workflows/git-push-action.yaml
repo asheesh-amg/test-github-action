@@ -3,7 +3,7 @@ on: push
 env:
   PRINT_GOOD_BYE: False
   GITHUB_TOKEN: ${{ github.token }}
-  DOCKER_IMAGE_NAME: docker.pkg.github.com/asheesh-amg/test-github-action/flask_test
+  DOCKER_IMAGE_NAME: ghcr.io/asheesh-amg/test-github-action/flask_test
   DOCKER_IMAGE_VERSION: 2.7
 jobs:
   first-job:
@@ -21,4 +21,6 @@ jobs:
       - name: Authenticalte github packages service
         run: docker login https://ghcr.io -u asheesh-amg -p $GITHUB_TOKEN
       - name: Build docker image
-        run: docker build --tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION -f Dockerfile
+        run: docker build -f Dockerfile -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION .
+      - name: push the docker image
+        run: docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
