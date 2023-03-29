@@ -21,4 +21,4 @@ jobs:
       - name: Authenticalte github packages service
         run: docker login https://ghcr.io -u asheesh-amg -p $GITHUB_TOKEN
       - name: Build docker image
-        run: docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION
+        run: docker build --tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_VERSION -f Dockerfile
