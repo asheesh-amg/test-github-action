@@ -2,6 +2,7 @@ name: githubaction
 on: push
 env:
   PRINT_GOOD_BYE: False
+#  GITHUB_TOKEN: ${{ github.token }}
   GITHUB_TOKEN: ${{ github.token }}
   DOCKER_IMAGE_NAME: ghcr.io/asheesh-amg/test-github-action/flask_test
   DOCKER_IMAGE_VERSION: 2.7
