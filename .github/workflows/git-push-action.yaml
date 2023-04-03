@@ -22,7 +22,7 @@ jobs:
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: test-github-action1
+          projectBaseDir: .
           args: >
             -Dsonar.organization=asheesh-amg
             -Dsonar.projectKey=asheesh-amg
