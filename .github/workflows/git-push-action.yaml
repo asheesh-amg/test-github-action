@@ -4,6 +4,7 @@ env:
   PRINT_GOOD_BYE: False
   GITHUB_TOKEN: ${{ github.token }}
   IMAGE_NAME: flask_test
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
 
@@ -16,11 +17,17 @@ jobs:
       - name: Print goodbye
         if: ${{ env.PRINT_GOOD_BYE == 'True'}}
         run: echo "Done - bye!"
-      - uses: actions/checkout@v3
-
+      - name: Checkout image
+        uses: actions/checkout@v3
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: test-github-action
+          args: >
+            -Dsonar.organization=asheesh-amg
+            -Dsonar.projectKey=asheesh-amg
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-
       - name: Log in to registry
         # This is where you will update the personal access token to GITHUB_TOKEN
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
