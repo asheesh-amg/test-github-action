@@ -20,7 +20,7 @@ jobs:
       - name: Checkout image
         uses: actions/checkout@v3
       - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: sonarsource\sonarcloud-github-action@master
         with:
           projectBaseDir: test-github-action
           args: >
